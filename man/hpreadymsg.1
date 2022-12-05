@@ -1,0 +1,58 @@
+.Dd December 5, 2022
+.Dt hp_readymsg 1
+.Os 
+.Sh NAME
+.Nm hp_readymsg
+.Nd change the ready message on most HP printers.
+.Sh SYNOPSIS
+.Nm
+.Ar address
+.Ar "message"
+.Sh DESCRIPTION
+This program is designed to exploit a buffer overflow in most HP printers that allows the "READY" message to be customized.
+Uses of this program include self-promotion ("SOMEONE IS 1337"), humor ("Ready for action" or "Ready, Batman!"), finding a missing printer ("Call IT if found"), or messing with users' minds ("ERROR -37");  the uses for this program are endless.
+.Pp
+A list of items with descriptions:
+.Bl -tag -width -indent
+.It Ar address
+A printer can be specified by any method that the operating system supports, such as a hostname (printer2), fully-qualified domain name such as (printer2.domain.example.com), or an IP address (192.168.0.1, fec0::1).
+As with any lookup, translating a name or FQDN to an IP address takes time, so if execution time matters (such as when acting on a list of printers) you may want to use a list of IP addresses.
+.It Ar "message"
+The message can be any string of up to sixteen characters, put in quotes.
+Some printers may support Unicode, but some do not;  therefore, it is best to use 7-bit ASCII characters.
+N.B., On the HP LaserJet 5si, you are allowed up to 44 characters.
+.El
+.Pp
+.Sh RETURN VALUES
+.Ex -std hp_readymsg
+This can be useful if you're writing a script;  i.e., normal people won't have to deal with this, much less care about it.
+.Pp
+Anyway, for those of you who need to know, the number can be one of the ones below;  any other number (or 1) indicates that something is seriously awry.
+.Bl -tag -width -indent
+.It 0
+The command completed successfully;  the printer's READY message was changed.
+All is well.
+Go take a look at the printer and laugh manically at your leetness.
+.It 2
+Syntax error;  make sure you're giving the program the correct arguments.
+.It 3
+Host not found.
+If you gave a hostname, is it correct?
+If so, try the IP address.
+If that still fails, the printer may be off or otherwise unreachable (e.g., due to VLAN's or a firewall).
+.It 4
+Could not create socket.
+In technical terms, this means that the program could not allocate a file descriptor for your socket.
+This one's a toughie;  let's hope it doesn't happen.
+.It 5
+The socket could not be created.
+Again, check your hostname or IP address.
+This commonly happens when you reach something that's not a JetDirect card, such as a computer.
+.El
+.Pp
+.Sh STANDARDS
+.St -std=gnu89
+.Pp
+.Sh AUTHOR (MAC OS X PORT)
+.An Colin Cogle .Aq <colin@colincogle.name>
+.Pp

@@ -1,0 +1,8 @@
+To install this app:
+
+```bash
+./autogen.sh
+./configure [--enable-debug]
+make
+sudo make install
+```
